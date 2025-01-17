@@ -35,6 +35,7 @@ def start():
 
     control = qat.controls.addCommand(cmd_def, "save", True)
 
+
 # Executed when add-in is stopped.
 def stop():
     # Get the various UI elements for this command
@@ -91,8 +92,8 @@ def command_execute(args: adsk.core.CommandCreatedEventArgs):
         ui.activeSelections.clear()
         ui.activeSelections.add(root)
         cmdDefs = ui.commandDefinitions
-        autosave = cmdDefs.itemById("ShowHistoryCmd")
-        autosave.execute()
+        showHistory = cmdDefs.itemById("ShowHistoryCmd")
+        showHistory.execute()
 
     except:
         if ui:
