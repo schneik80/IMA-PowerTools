@@ -18,6 +18,8 @@ from .refmanager import entry as refmanager
 from .refrences import entry as refrences
 from .refresh import entry as refresh
 from .relateddata import entry as relateddata
+from .shareDocument import entry as shareDocument
+from .shareSettings import entry as shareSettings
 from .sketchfix import entry as sketchfix
 from .sketchunderconstrained import entry as sketchunderconstrained
 from .tabToolbar import entry as tabToolbar
@@ -41,6 +43,8 @@ commands = [
     refmanager,
     refrences,
     relateddata,
+    shareDocument,
+    shareSettings,
     sketchfix,
     sketchunderconstrained,
     tabToolbar,

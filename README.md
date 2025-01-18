@@ -1,4 +1,4 @@
-# Power Tools for Fusion v0.6
+# Power Tools for Fusion v0.7
 
 Make working as a team, cloud data, and with assemblies more productive.
 
@@ -87,6 +87,10 @@ Find and repair common sketch profile issues.
 **[Sketch Under-Constrained](./docs/SketchUnder.md)**
 
 Highlight under-constrained sketch entities.
+
+**[Share Menu](./docs/Share%20Menu.md)**
+
+Quickly share the active document and control share settings.
 
 ---
 
