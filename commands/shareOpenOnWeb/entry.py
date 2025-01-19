@@ -109,7 +109,7 @@ def command_execute(args: adsk.core.CommandEventArgs):
 
     if app.activeDocument.isSaved == False:
         ui.messageBox(
-            "Can not edit share settings for an unsaved document\nPlease Save the Document.",
+            "Can not <b>Open on Web</b> for an unsaved document\nPlease Save the Document.",
             "Share Settings",
             0,
             2,

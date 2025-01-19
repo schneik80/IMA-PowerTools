@@ -46,7 +46,7 @@ commands = [
     relateddata,
     shareDocument,
     shareSettings,
-    shareOpenOnWeb
+    shareOpenOnWeb,
     sketchfix,
     sketchunderconstrained,
     tabToolbar,
