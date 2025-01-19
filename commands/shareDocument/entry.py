@@ -1,6 +1,6 @@
 import adsk.core, adsk.fusion
 import os, traceback
-from ...lib import fusionAddinUtils as futil
+from ...lib import fusionAddInUtils as futil
 from ... import config
 
 app = adsk.core.Application.get()
@@ -117,8 +117,10 @@ def command_execute(args: adsk.core.CommandEventArgs):
         return
 
     if isShareAllowed is False:
+        permLink = app.activeDocument.designDataFile.fusionWebURL
+        clipboardText(permLink)
         ui.messageBox(
-            "Sharing is not allowed.\nPlease check if your Team Hub Administrator has disabled sharing",
+            f"Sharing is not allowed. Please check if your Team Hub Administrator has disabled sharing.<br><br>A private perma-link was copied to clipboard instead. This link will only allow Team hub members access to the document details page.",
             "Share Document",
             0,
             2,
