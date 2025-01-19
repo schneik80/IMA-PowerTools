@@ -20,9 +20,13 @@ Settings control:
 
 If download is turned off, the recipient of the link will only be able to view the document.
 
+**Share Open on Web**
+
+Open the active document's details page in Fusion Team web client.
+
 ## Access
 
-The **Share Menu**  is accessed at the upper right of the application frame next to the Extensions Manager Command in the Fusion's right Quick Access Toolbar. The **Share** dropdown menu includes the **Get Share Link** and **Change Share Settings** commands.
+The **Share Menu** is accessed at the upper right of the application frame next to the Extensions Manager Command in the Fusion's right Quick Access Toolbar. The **Share** dropdown menu includes the **Get Share Link** and **Change Share Settings** commands.
 
 ![access](/docs/assets/sharemenu.png)
 

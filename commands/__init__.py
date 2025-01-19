@@ -20,6 +20,7 @@ from .refresh import entry as refresh
 from .relateddata import entry as relateddata
 from .shareDocument import entry as shareDocument
 from .shareSettings import entry as shareSettings
+from .shareOpenOnWeb import entry as shareOpenOnWeb
 from .sketchfix import entry as sketchfix
 from .sketchunderconstrained import entry as sketchunderconstrained
 from .tabToolbar import entry as tabToolbar
@@ -45,6 +46,7 @@ commands = [
     relateddata,
     shareDocument,
     shareSettings,
+    shareOpenOnWeb
     sketchfix,
     sketchunderconstrained,
     tabToolbar,
