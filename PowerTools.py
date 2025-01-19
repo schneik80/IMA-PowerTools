@@ -1,6 +1,6 @@
 # Assuming you have not changed the general structure of the template no modification is needed in this file.
 from . import commands
-from .lib import fusion360utils as futil
+from .lib import fusionAddInUtils as futil
 
 def run(context):
     try:

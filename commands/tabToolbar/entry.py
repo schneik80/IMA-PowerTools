@@ -2,7 +2,7 @@ import adsk.core, adsk.fusion
 import os, traceback, pathlib, zipfile, sys, json
 import urllib.request
 from sys import platform
-from ...lib import fusion360utils as futil
+from ...lib import fusionAddInUtils as futil
 from ... import config
 
 app = adsk.core.Application.get()

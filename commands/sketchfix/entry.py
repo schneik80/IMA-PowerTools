@@ -1,6 +1,6 @@
 import adsk.core, adsk.fusion
 import os, traceback
-from ...lib import fusion360utils as futil
+from ...lib import fusionAddInUtils as futil
 from ... import config
 
 app = adsk.core.Application.get()

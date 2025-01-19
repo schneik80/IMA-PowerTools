@@ -1,6 +1,6 @@
 import adsk.core, adsk.fusion, adsk.cam, adsk.drawing
 import os, traceback, json
-from ...lib import fusion360utils as futil
+from ...lib import fusionAddInUtils as futil
 from ... import config
 from datetime import datetime
 

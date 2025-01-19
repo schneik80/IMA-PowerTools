@@ -5,7 +5,7 @@
 import adsk.core
 import os, os.path
 import json
-from .lib import fusion360utils as futil
+from .lib import fusionAddInUtils as futil
 
 # Flag that indicates to run in Debug mode or not. When running in Debug mode
 # more information is written to the Text Command window. Generally, it's useful
