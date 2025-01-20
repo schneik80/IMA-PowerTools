@@ -182,6 +182,7 @@ def palette_incoming(html_args: adsk.core.HTMLEventArgs):
     futil.log(log_msg, adsk.core.LogLevels.InfoLogLevel)
 
     palette.isVisible = False
+    ui.progressBar.showBusy("Creating new document...")
 
     docTitle = create_unique_Filename()
     docActive = app.data.activeFolder
@@ -194,6 +195,8 @@ def palette_incoming(html_args: adsk.core.HTMLEventArgs):
         "Auto created by new add-in",
         "",
     )
+
+    ui.progressBar.hide()
 
 
 # This event handler is called when the command terminates.
