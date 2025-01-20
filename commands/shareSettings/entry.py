@@ -6,7 +6,7 @@ from ... import config
 app = adsk.core.Application.get()
 ui = app.userInterface
 
-# TODO *** Specify the command identity information. ***
+# Specify the command identity information.
 CMD_ID = "cmd_shareSettings"
 CMD_NAME = "Change Share Settings"
 CMD_Description = "Manage the active document's share link settings. Settings control if the document can be downloaded and is password protected."
@@ -85,7 +85,7 @@ def command_created(args: adsk.core.CommandCreatedEventArgs):
     # https://help.autodesk.com/view/fusion360/ENU/?contextId=CommandInputs
     inputs = args.command.commandInputs
 
-    # TODO Connect to the events that are needed by this command.
+    # Connect to the events that are needed by this command.
     futil.add_handler(
         args.command.execute, command_execute, local_handlers=local_handlers
     )
@@ -100,7 +100,7 @@ def command_execute(args: adsk.core.CommandEventArgs):
     # General logging for debug.
     futil.log(f"{CMD_NAME} Command Execute Event")
 
-    # TODO ******************************** Your code here ********************************
+    # ******************************** Your code here ********************************
 
     shareCmdDef = ui.commandDefinitions.itemById("SimpleSharingPublicLinkCommand")
     isShareAllowed = shareCmdDef.controlDefinition.isEnabled

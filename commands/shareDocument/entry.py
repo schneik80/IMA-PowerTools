@@ -6,7 +6,7 @@ from ... import config
 app = adsk.core.Application.get()
 ui = app.userInterface
 
-# TODO *** Specify the command identity information. ***
+# Specify the command identity information.
 CMD_ID = "cmd_shareDocument"
 CMD_NAME = "Get a Share Link"
 CMD_Description = "Share active Document and copy the link to the clipboard."
@@ -87,7 +87,7 @@ def command_created(args: adsk.core.CommandCreatedEventArgs):
     # https://help.autodesk.com/view/fusion360/ENU/?contextId=CommandInputs
     inputs = args.command.commandInputs
 
-    # TODO Connect to the events that are needed by this command.
+    # Connect to the events that are needed by this command.
     futil.add_handler(
         args.command.execute, command_execute, local_handlers=local_handlers
     )
@@ -102,7 +102,7 @@ def command_execute(args: adsk.core.CommandEventArgs):
     # General logging for debug.
     futil.log(f"{CMD_NAME} Command Execute Event")
 
-    # TODO ******************************** Your code here ********************************
+    # ******************************** Your code here ********************************
 
     shareCmdDef = ui.commandDefinitions.itemById("SimpleSharingPublicLinkCommand")
     isShareAllowed = shareCmdDef.controlDefinition.isEnabled
@@ -129,6 +129,14 @@ def command_execute(args: adsk.core.CommandEventArgs):
 
     try:
         shareState = app.activeDocument.dataFile.sharedLink
+
+        # check share settings
+        if shareState.isShared == True:
+            wasShared = True
+        else:
+            wasShared = False
+
+        # show a progress bar
         progressBar = ui.progressBar
 
         # Check if the document is shared
@@ -137,8 +145,6 @@ def command_execute(args: adsk.core.CommandEventArgs):
             progressBar.showBusy("Generating Share Link"),
 
             shareState.isShared = True  # Share the document
-
-            progressBar.hide()
 
         # Get the shared link
         shareLink = shareState.linkURL
@@ -156,8 +162,51 @@ def command_execute(args: adsk.core.CommandEventArgs):
         # Copy the shared link to the clipboard
         clipboardText(shareLink)
 
-        resultString = f"<b>Document is shared.</b> <br> Share link: <a href=''{shareLink}''>{shareLink}</a> was added to clipboard."
-        # Display a link to the user
+        if wasShared == True:
+            resultString = f"Document is already shared <br>"
+        else:
+            resultString = f"<b>Document is now shared.</b> <br>"
+
+        resultString += f"< Share link: <a href=''{shareLink}''>{shareLink}</a> was added to clipboard.<br><br>Note:"
+
+        if shareState.isDownloadAllowed == False:
+            noDownload = True
+        else:
+            noDownload = False
+
+        if shareState.isPasswordRequired == True:
+            passwordProtected = True
+        else:
+            passwordProtected = False
+
+        if noDownload == True:
+            resultString += "<br>Downloading from the link is not turned on. To enable downloading, go to <b>Share Settings</b><br>"
+        else:
+            resultString += (
+                "<br>Downloading the document from the share link is allowed.<br>"
+            )
+
+        if passwordProtected == True:
+            resultString += "<br>The share is password protected.<br>"
+        else:
+            resultString += f"<br>The share does not have a password. To set a password, go to <b>Share Settings</b><br>"
+
+        if app.activeProduct.productType == "DesignProductType":
+            rootComp = app.activeProduct.rootComponent
+
+            if has_external_child_reference(rootComp):
+                futil.log(f"{CMD_NAME} Document has external reference")
+                if noDownload == True:
+                    resultString += f"<br>This design has external references for one or more designs. Sharing this design will allow the referenced designs to be viewed but not downloaded. <br>"
+                else:
+                    resultString += f"<br>This design has external references for one or more designs. Sharing this design will also share the referenced designs. To avoid sharing referenced designs, either save this design as a new document and break link or disable download.<br>"
+            else:
+                futil.log(f"{CMD_NAME} Document has no external reference")
+
+        # Hide the progress bar
+        progressBar.hide()
+
+        # Display the message to the user
         ui.messageBox(
             resultString,
             "Share Document",
@@ -177,6 +226,16 @@ def clipboardText(linkText):
     else:
         os.system(f'echo "{linkText.strip()}" | pbcopy')
     app.log(f"link: {linkText} was added to clipboard")
+
+
+def has_external_child_reference(component: adsk.fusion.Component) -> bool:
+    for occurrence in component.occurrences:
+        if occurrence.isReferencedComponent:
+            return True
+        # Recursively check child components
+        if has_external_child_reference(occurrence.component):
+            return True
+    return False
 
 
 # This event handler is called when the command terminates.
