@@ -1,5 +1,6 @@
 import adsk.core, adsk.fusion
 import os, traceback
+from urllib.parse import quote
 from ...lib import fusionAddInUtils as futil
 from ... import config
 
@@ -7,9 +8,9 @@ app = adsk.core.Application.get()
 ui = app.userInterface
 
 # Specify the command identity information.
-CMD_ID = "cmd_shareDocument"
-CMD_NAME = "Get a Share Link"
-CMD_Description = "Share active Document and copy the link to the clipboard."
+CMD_ID = "cmd_shareOpenDesktop"
+CMD_NAME = "Get Open on Desktop Link"
+CMD_Description = "Get a link on the clipboard for the active document that can be shared with your team to directly open the document for edit in their Fusion desktop client."
 
 # Specify that the command will be promoted to the panel.
 IS_PROMOTED = False
@@ -54,7 +55,7 @@ def start():
         dropDown = qat.controls.itemById("shareDropMenu")
 
     # Add a button to toggle the visibility to the end of the panel.
-    control = dropDown.controls.addCommand(cmd_def, "", False)
+    control = dropDown.controls.addCommand(cmd_def, "cmd_shareSettings", True)
     # control.isPromoted = True
 
 
@@ -102,104 +103,48 @@ def command_execute(args: adsk.core.CommandEventArgs):
     # General logging for debug.
     futil.log(f"{CMD_NAME} Command Execute Event")
 
-    # ******************************** Your code here ********************************
-
-    shareCmdDef = ui.commandDefinitions.itemById("SimpleSharingPublicLinkCommand")
-    isShareAllowed = shareCmdDef.controlDefinition.isEnabled
-
     if not app.activeDocument.isSaved:
         ui.messageBox(
-            "Can not share an unsaved document\nPlease Save the Document.",
-            "Share Document",
-            0,
-            2,
-        )
-        return
-
-    if not isShareAllowed:
-        permLink = app.activeDocument.designDataFile.fusionWebURL
-        futil.clipText(permLink)
-        ui.messageBox(
-            f"Sharing is not allowed. Please check if your Team Hub Administrator has disabled sharing.<br><br>A private perma-link was copied to clipboard instead. This link will only allow Team hub members access to the document details page.",
-            "Share Document",
+            "Can not get <b>Open on Desktop</b> link for an unsaved document\nPlease Save the Document.",
+            "Get Open on Desktop Link",
             0,
             2,
         )
         return
 
     try:
-        shareState = app.activeDocument.dataFile.sharedLink
-
-        # check share settings
-        if shareState.isShared == True:
-            wasShared = True
-        else:
-            wasShared = False
-
         # show a progress bar
         progressBar = ui.progressBar
+        progressBar.showBusy("Generating Share Link"),
 
-        # Check if the document is shared
-        if shareState.isShared == False:
-            # creating a link can take a few seconds so show a busy bar
-            progressBar.showBusy("Generating Share Link"),
+        # Generate the share link
+        shareLink = f"fusion360://lineageUrn="
+        shareLink += quote(app.activeDocument.dataFile.id)
 
-            shareState.isShared = True  # Share the document
+        shareLink += "&hubUrl="
+        galilleoUrl = app.activeDocument.dataFile.parentProject.parentHub.fusionWebURL
+        stripGalilleo = galilleoUrl.replace(" ", "").rstrip(galilleoUrl[-3:]).upper()
+        shareLink += quote(stripGalilleo)
 
-        # Get the shared link
-        shareLink = shareState.linkURL
+        shareLink += "&documentName="
+        shareLink += quote(app.activeDocument.name)
 
-        if shareLink == "":
-            app.log(f"Failed to get a link to the document")
-            ui.messageBox(
-                f"Failed to share the document.",
-                "Share Document",
-                1,
-                2,
-            )
-            exit(0)
+        # output the URL to the text commands
+        futil.log(
+            f"{CMD_NAME} Open on Desktop Document Link: {shareLink} was added to the clipboard."
+        )
 
         # Copy the shared link to the clipboard
         futil.clipText(shareLink)
 
-        if wasShared == True:
-            resultString = f"Document is already shared <br>"
-        else:
-            resultString = f"<b>Document is now shared.</b> <br>"
-
-        resultString += f"A <b>Share link</b> for {app.activeDocument.name}: <a href=''{shareLink}''>{shareLink}</a> was added to the clipboard.<br><br>Note:"
-
-        if shareState.isDownloadAllowed == False:
-            noDownload = True
-        else:
-            noDownload = False
-
-        if shareState.isPasswordRequired == True:
-            passwordProtected = True
-        else:
-            passwordProtected = False
-
-        if noDownload == True:
-            resultString += "<br>Downloading from the link is not turned on. To enable downloading, go to <b>Share Settings</b><br>"
-        else:
-            resultString += (
-                "<br>Downloading the document from the share link is allowed.<br>"
-            )
-
-        if passwordProtected == True:
-            resultString += "<br>The share is password protected.<br>"
-        else:
-            resultString += f"<br>The share does not have a password. To set a password, go to <b>Share Settings</b><br>"
+        resultString = f"An <b>Open on Desktop</b> link for {app.activeDocument.name} was added to the clipboard."
 
         if app.activeProduct.productType == "DesignProductType":
             rootComp = app.activeProduct.rootComponent
 
             if has_external_child_reference(rootComp):
                 futil.log(f"{CMD_NAME} Document has external references")
-                if noDownload == True:
-                    resultString += f"<br>This design has external references. Sharing this design will allow the referenced designs to be viewed but not downloaded. <br>"
-                else:
-                    resultString += f"<br>This design has external references. Sharing this design will also share the referenced designs. To avoid sharing referenced designs, either save this design as a new document and break link or disable download.<br>"
+                resultString += f"<br><br>Note:<br>This design has external references. Sharing this design will may share the referenced designs depending on the team member's permissions."
             else:
                 futil.log(f"{CMD_NAME} Document has no external references")
 

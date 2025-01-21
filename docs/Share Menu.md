@@ -19,8 +19,6 @@ The share message will display additional information as needed:
 
 **Change Share Settings** allows you to adjust the active documents share settings from the same menu.
 
-**Open on Web** opens the active document's details page in Fusion Team web client.
-
 Settings control:
 
 - Turn sharing on and off.
@@ -29,9 +27,11 @@ Settings control:
 
 If download is turned off, the recipient of the link will only be able to view the document.
 
-**Share Open on Web**
+**Get Open on Desktop link**
 
-Open the active document's details page in Fusion Team web client.
+Within your team you may want different links for different collaborators. Share links work well for external members to view a design and for extended team members to access a document in Fusion's web client. Collaborating with authors and editors on documents is improved with the **Get Open on Desktop Link** command. When sent to other Fusion desktop client users, these links directly open the document for edit in the Desktop Client.
+
+The use of these links requires that the team member be a member of the hub and have permission to the document.
 
 ## Access
 
