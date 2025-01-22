@@ -9,7 +9,7 @@
 #  AUTODESK, INC. DOES NOT WARRANT THAT THE OPERATION OF THE PROGRAM WILL BE
 #  UNINTERRUPTED OR ERROR FREE.
 
-import os
+import os, subprocess
 import traceback
 import adsk.core
 
@@ -58,7 +58,7 @@ def clipText(linkText):
     linkText -- string to copy to system clipboard.
     """
     if os.name == "nt":
-        os.system(f"echo {linkText.strip()} | clip")
+        subprocess.run(["clip.exe"], input=linkText.strip().encode("utf-8"), check=True)
     else:
         os.system(f'echo "{linkText.strip()}" | pbcopy')
     app.log(f"link: {linkText} was added to clipboard")

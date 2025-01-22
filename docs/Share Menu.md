@@ -8,7 +8,8 @@ Sharing is core to collaborative design. The Share Menu makes it easier to acces
 
 **Get Share Link** enables sharing, generates a public share link with Downloads enabled and then copies the link to the system clipboard. You can then paste into text or emails to quickly share the document.
 
-Note. The document must be saved, and your Fusion Team Hub must have enabled share links for sharing to work. If sharing is disabled, a private perma-link will be copied to clipboard instead. This link will only allow Team hub members access to the document details page.",
+Note:
+The document must be saved, and your Fusion Team Hub must have enabled share links for sharing to work. If sharing is disabled, a private permalink will be copied to clipboard instead. This link will only allow Team hub members access to the document details page.
 
 The share message will display additional information as needed:
 
