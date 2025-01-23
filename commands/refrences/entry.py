@@ -108,7 +108,7 @@ def command_execute(args: adsk.core.CommandCreatedEventArgs):
         design = app.activeProduct
 
         if not design:
-            ui.messageBox('No active Fusion design')
+            ui.messageBox("No active Fusion design")
             return
 
         activeDoc = app.activeDocument
@@ -127,71 +127,62 @@ def command_execute(args: adsk.core.CommandCreatedEventArgs):
                 if subString in file.name:
                     target_list = docRelated
 
-                elif file.fileExtension == 'f2d':
+                elif file.fileExtension == "f2d":
                     target_list = docDrawings
 
                 else:
                     target_list = docParents
 
-                target_list.append({
-                        "name": file.name,
-                        "id": file.id,
-                        "url": file.fusionWebURL
-                    })
-
         # Process child data files
         if childDataFiles:
-            docChildren = [{
-                "name": file.name,
-                "id": file.id,
-                "url": file.fusionWebURL
-            } for file in childDataFiles]
+            docChildren = [
+                {"name": file.name, "id": file.id} for file in childDataFiles
+            ]
 
         # Links String to report references
-        links = f'<h1>Source document: {html.escape(activeDoc.name)}</h1>'
-        links += f'<h3>Parents ({len(docParents)}):</h3>'
+        links = f"<h1>Source document: {html.escape(activeDoc.name)}</h1>"
+        links += f"<h3>Parents ({len(docParents)}):</h3>"
 
         if docParents:
             for item in docParents:
-                links += f'<a href="{item["url"]}">{html.escape(item["name"])}</a><br>'
+                links += f'{(item["name"])}<br>'
         else:
-            links += f'No Parent Relationships'
+            links += f"No Parent Relationships"
 
-        links += f'<h3>Children ({len(docChildren)}):</h3>'
+        links += f"<h3>Children ({len(docChildren)}):</h3>"
 
         if docChildren:
             for item in docChildren:
-                links += f'<a href="{item["url"]}">{html.escape(item["name"])}</a><br>'
+                links += f'{(item["name"])}<br>'
         else:
-            links += f'No Child Relationships<br>'
+            links += f"No Child Relationships<br>"
 
-
-        links += f'<h3>Drawings ({len(docDrawings)}):</h3>'
+        links += f"<h3>Drawings ({len(docDrawings)}):</h3>"
 
         if docDrawings:
             for item in docDrawings:
-                links += f'<a href="{item["url"]}">{html.escape(item["name"])}</a><br>'
+                links += f'{(item["name"])}<br>'
         else:
-            links += f'No Drawings<br>'
+            links += f"No Drawings<br>"
 
-
-        links += f'<h3>Related Data ({len(docRelated)}):</h3>'
+        links += f"<h3>Related Data ({len(docRelated)}):</h3>"
 
         if docRelated:
             for item in docRelated:
-                links += f'<a href="{item["url"]}">{html.escape(item["name"])}</a><br>'
+                links += f'{(item["name"])}<br>'
         else:
-            links += f'No Related Data Relationships'
-        
-        relationshipCount = len(docParents) + len(docChildren) + len(docDrawings) + len(docRelated)
+            links += f"No Related Data Relationships"
+
+        relationshipCount = (
+            len(docParents) + len(docChildren) + len(docDrawings) + len(docRelated)
+        )
         relationsTitle = f"References ({relationshipCount})"
 
         ui.messageBox(links, relationsTitle)
-        
 
     except:
         if ui:
-            ui.messageBox('Failed:\n{}'.format(traceback.format_exc()))
+            ui.messageBox("Failed:\n{}".format(traceback.format_exc()))
 
 
 # This function will be called when the user completes the command.
