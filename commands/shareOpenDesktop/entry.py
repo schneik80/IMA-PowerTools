@@ -106,7 +106,7 @@ def command_execute(args: adsk.core.CommandEventArgs):
     if not app.activeDocument.isSaved:
         ui.messageBox(
             "Can not get <b>Open on Desktop</b> link for an unsaved document\nPlease Save the Document.",
-            "Get Open on Desktop Link",
+            CMD_NAME,
             0,
             2,
         )

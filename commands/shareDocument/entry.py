@@ -207,12 +207,7 @@ def command_execute(args: adsk.core.CommandEventArgs):
         progressBar.hide()
 
         # Display the message to the user
-        ui.messageBox(
-            resultString,
-            "Share Document",
-            0,
-            2,
-        )
+        ui.messageBox(resultString, CMD_NAME)
 
     except:
         # Write the error message to the TEXT COMMANDS window.
