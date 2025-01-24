@@ -117,17 +117,16 @@ def command_execute(args: adsk.core.CommandEventArgs):
         progressBar = ui.progressBar
         progressBar.showBusy("Generating Share Link"),
 
-        # Generate the share link
-        shareLink = f"fusion360://lineageUrn="
-        shareLink += quote(app.activeDocument.dataFile.id)
+        shareDataFile = quote(app.activeDocument.dataFile.id)
 
-        shareLink += "&hubUrl="
         galilleoUrl = app.activeDocument.dataFile.parentProject.parentHub.fusionWebURL
-        stripGalilleo = galilleoUrl.replace(" ", "").rstrip(galilleoUrl[-3:]).upper()
-        shareLink += quote(stripGalilleo)
+        stripGalileo = galilleoUrl.replace(" ", "")[:-3]
+        shareHubURL = quote(stripGalileo)
 
-        shareLink += "&documentName="
-        shareLink += quote(app.activeDocument.name)
+        shareDocName = quote(app.activeDocument.name)
+
+        # Generate the share link
+        shareLink = f"fusion360://lineageUrn={shareDataFile}&hubUrl={shareHubURL}&documentName=shareDocName{shareDocName}"
 
         # output the URL to the text commands
         futil.log(
@@ -154,9 +153,7 @@ def command_execute(args: adsk.core.CommandEventArgs):
         # Display the message to the user
         ui.messageBox(
             resultString,
-            "Share Document",
-            0,
-            2,
+            CMD_NAME,
         )
 
     except:
