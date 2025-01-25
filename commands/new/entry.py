@@ -188,7 +188,7 @@ def palette_incoming(html_args: adsk.core.HTMLEventArgs):
     docActive = app.data.activeFolder
     docCopyURN = message_data["link"]
     docActiveURN = app.data.findFileById(docCopyURN)
-    docNew = app.documents.open(docActiveURN)
+    docNew = app.documents.open(docActiveURN, False)
     docNew.saveAs(
         docTitle,
         docActive,
@@ -210,7 +210,7 @@ def command_destroy(args: adsk.core.CommandEventArgs):
 
 def create_unique_Filename(prefix="new"):
     # get current timestamp
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    timestamp = datetime.now().strftime("%Y%m%D_%H%M%S")
     filename = f"{prefix}_{timestamp}"
-
+    filename = ui.inputBox("Enter a name for the new document", CMD_NAME, str(filename))
     return filename
