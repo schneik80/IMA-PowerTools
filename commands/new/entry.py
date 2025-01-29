@@ -212,5 +212,5 @@ def create_unique_Filename(prefix="new"):
     # get current timestamp
     timestamp = datetime.now().strftime("%Y%m%D_%H%M%S")
     filename = f"{prefix}_{timestamp}"
-    filename = ui.inputBox("Enter a name for the new document", CMD_NAME, str(filename))
+    # filename = ui.inputBox("Enter a name for the new document", CMD_NAME, str(filename))
     return filename
