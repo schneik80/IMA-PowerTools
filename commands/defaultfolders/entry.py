@@ -75,7 +75,7 @@ def command_execute(args: adsk.core.CommandCreatedEventArgs):
 
     try:
         app = adsk.core.Application.get()
-        ui  = app.userInterface
+        ui = app.userInterface
         project = app.data.activeProject
         root = project.rootFolder
         folders = root.dataFolders
@@ -83,20 +83,20 @@ def command_execute(args: adsk.core.CommandCreatedEventArgs):
         folder_names = [folder.name.casefold() for folder in folders]
 
         # Check if 'OBIT' folder already exists
-        if 'obit' not in folder_names:
-            folders.add('Obit')
-        
+        if "obit" not in folder_names:
+            folders.add("Obit")
+
         # Check if 'OBIT' folder already exists
-        if 'archive' not in folder_names:
-            folders.add('Archive')
+        if "archive" not in folder_names:
+            folders.add("Archive")
 
         # Check if 'Quarantine' folder already exists
-        if 'quarantine' not in folder_names:
-            folders.add('Quarantine')
+        if "quarantine" not in folder_names:
+            folders.add("Assets")
 
     except:
         if ui:
-            ui.messageBox('Failed:\n{}'.format(traceback.format_exc()))
+            ui.messageBox("Failed:\n{}".format(traceback.format_exc()))
 
 
 # This function will be called when the user completes the command.
