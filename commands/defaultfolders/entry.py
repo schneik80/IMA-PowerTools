@@ -5,6 +5,7 @@ from ... import config
 
 app = adsk.core.Application.get()
 ui = app.userInterface
+folderSet = 1
 
 CMD_NAME = "Add Default Project Folders"
 CMD_ID = "PT-defaultfolders"
@@ -75,28 +76,79 @@ def command_execute(args: adsk.core.CommandCreatedEventArgs):
 
     try:
         app = adsk.core.Application.get()
-        ui  = app.userInterface
+        ui = app.userInterface
         project = app.data.activeProject
         root = project.rootFolder
         folders = root.dataFolders
 
         folder_names = [folder.name.casefold() for folder in folders]
 
-        # Check if 'OBIT' folder already exists
-        if 'obit' not in folder_names:
-            folders.add('Obit')
-        
-        # Check if 'OBIT' folder already exists
-        if 'archive' not in folder_names:
-            folders.add('Archive')
+        if folderSet == 1:
 
-        # Check if 'Quarantine' folder already exists
-        if 'quarantine' not in folder_names:
-            folders.add('Quarantine')
+            # Check if 'Documents' folder already exists
+            if "documents" not in folder_names:
+                folders.add("Documents")
+
+            # Check if 'Archive' folder already exists
+            if "archive" not in folder_names:
+                folders.add("Archive")
+
+            # Check if 'Obit' folder already exists
+            if "obit" not in folder_names:
+                folders.add("Obit")
+
+        elif folderSet == 2:
+            # Check if '00 - products' folder already exists
+            if "00 - products" not in folder_names:
+                folders.add("00 - Products")
+
+            # Check if '01 - Sub Assemblies' folder already exists
+            if "01 - sub assemblies" not in folder_names:
+                folders.add("01 - Sub Assemblies")
+
+            # Check if '02 - ECAD' folder already exists
+            if "02 - ecad" not in folder_names:
+                folders.add("02 - ECAD")
+
+            # Check if '03 - Parts' folder already exists
+            if "03 - parts" not in folder_names:
+                folders.add("03 - Parts")
+
+            # Check if '04 - Purchased Parts' folder already exists
+            if "04 - parts purchased" not in folder_names:
+                folders.add("04 - Purchased Parts")
+
+            # Check if '05 - 3DPCB Parts' folder already exists
+            if "05 - 3dpcb parts" not in folder_names:
+                folders.add("05 - 3DPCB Parts")
+
+            # Check if '06 - Drawings' folder already exists
+            if "06 - drawings" not in folder_names:
+                folders.add("06 - Drawings")
+
+            # Check if '07 - Documents' folder already exists
+            if "07 - documents" not in folder_names:
+                folders.add("07 - Documents")
+
+            # Check if '08 - Render' folder already exists
+            if "08 - render" not in folder_names:
+                folders.add("08 - Render")
+
+            # Check if '09 - Manufacture' folder already exists
+            if "09 - manufacture" not in folder_names:
+                folders.add("09 - Manufacture")
+
+            # Check if '10 - Archive' folder already exists
+            if "10 - archive" not in folder_names:
+                folders.add("10 - Archive")
+
+            # Check if 'XX - Obit' folder already exists
+            if "XX - obit" not in folder_names:
+                folders.add("XX - Obit")
 
     except:
         if ui:
-            ui.messageBox('Failed:\n{}'.format(traceback.format_exc()))
+            ui.messageBox("Failed:\n{}".format(traceback.format_exc()))
 
 
 # This function will be called when the user completes the command.
