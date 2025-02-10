@@ -133,6 +133,12 @@ def command_execute(args: adsk.core.CommandCreatedEventArgs):
                 else:
                     target_list = docParents
 
+                target_list.append({
+                        "name": file.name,
+                        "id": file.id,
+                        "url": file.fusionWebURL
+                    })
+
         # Process child data files
         if childDataFiles:
             docChildren = [
