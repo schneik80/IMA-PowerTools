@@ -73,6 +73,23 @@ def command_execute(args: adsk.core.CommandCreatedEventArgs):
     try:
         app = adsk.core.Application.get()
         ui = app.userInterface
+
+        design = adsk.fusion.Design.cast(product)
+        if not design:
+            ui.messageBox("No active Fusion design", "No Design")
+            return
+
+        # Check that the active document has been saved.
+        doc = app.activeDocument
+        if not doc.isSaved:
+            ui.messageBox(
+                "The active document must be saved before running this script.",
+                "Please Save",
+                0,
+                3,
+            )
+            return
+
         # set design as the active workspace
         if ui.activeWorkspace.id != "FusionSolidEnvironment":
             futil.log(f"active workspace {ui.activeWorkspace.id}")
@@ -83,10 +100,6 @@ def command_execute(args: adsk.core.CommandCreatedEventArgs):
 
         # Select the root component
         product = app.activeProduct
-        design = adsk.fusion.Design.cast(product)
-        if not design:
-            ui.messageBox("No active Fusion design", "No Design")
-            return
         root = design.rootComponent
         design.activateRootComponent()
         ui.activeSelections.clear()
